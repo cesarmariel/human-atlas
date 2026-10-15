@@ -30,6 +30,8 @@ export const EXPLANATIONS:Record<string,string> = {
  'spleen':'A lymphoid organ in the upper left abdomen. It filters blood, removes aging blood cells, and participates in immune responses.',
  'pancreas':'An abdominal organ with digestive and endocrine roles. It supplies enzymes to the small intestine and releases hormones including insulin and glucagon.',
  'urinary bladder':'A muscular reservoir in the pelvis that stores urine arriving from the kidneys through the ureters.',
+ 'right lung':'The right lung has three lobes separated by fissures. Air reaches it through the right main bronchus, and its tissue exchanges oxygen and carbon dioxide with the blood.',
+ 'left lung':'The left lung has two lobes and a notch that makes room for the heart. Air reaches it through the left main bronchus, and its tissue exchanges oxygen and carbon dioxide with the blood.',
  'trachea':'The main airway connecting the larynx to the bronchi. Its cartilage supports keep the airway open during breathing.',
  'diaphragm':'A broad muscle separating the chest and abdomen. When it contracts, it increases chest volume and helps draw air into the lungs.',
 };
