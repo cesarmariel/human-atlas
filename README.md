@@ -63,6 +63,13 @@ Import this repository into Vercel as a Vite project. The included `vercel.json`
 
 ## License
 
-Original application code is released under the [MIT License](LICENSE). **The anatomy data has its own CC BY 4.0 license**; preserve the attribution when redistributing it. Third-party dependencies retain their respective licenses.
+Original application code is released under the [MIT License](LICENSE). **The anatomy data and texts have their own licenses**; preserve the attribution when redistributing them:
+
+- BodyParts3D 4.0 meshes and names (`models/body-0.bin` to `models/body-14.bin`): **CC BY 4.0**, © The Database Center for Life Science.
+- BodyParts3D 3.0 additions (lungs, liver and 85 other structures in `models/body-15.bin`): **CC BY-SA 2.1 Japan**, © The Database Center for Life Science. Adaptations of that chunk must be shared under the same license.
+- Human Reference Atlas female model (`models/atlas-female.json`, `models/female-*.bin`): **CC BY 4.0**, Kristen Browne and Heidi Schlehlein, HuBMAP.
+- Organ explanations (`app/organs.ts`) are original texts checked against OpenStax *Anatomy and Physiology 2e* (**CC BY 4.0**).
+
+Full credits and source links are in [ATTRIBUTION.md](public/ATTRIBUTION.md). Third-party dependencies retain their respective licenses.
 
 Issues and pull requests are welcome. Please include reproduction steps and browser/device details for interaction problems.
