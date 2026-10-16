@@ -27,6 +27,13 @@ BodyParts3D, Copyright© The Database Center for Life Science licensed by CC Att
 
 Adaptations: same axis, unit and stage conversion as the 4.0 meshes; normals quantized to signed 16-bit; simplified with the same 0.2% relative error limit, except two meshes (upper lobe of right lung, left quadratus lumborum) kept at full detail because simplification collapsed thin edges. Structures that 4.0 already models, even under another name or split differently, were not added. The current database license page (CC BY 4.0, updated 2025-02-27) does not name individual releases, so the license stated in these files is kept.
 
+## Organ explanations
+
+The "What it is" and "How it works" texts for 65 organs and structures (`app/organs.ts`) are written for this atlas in English and Spanish and checked against OpenStax, *Anatomy and Physiology 2e* (J. Gordon Betts et al., Rice University, 2022), licensed CC BY 4.0. Each explanation links to the textbook section it follows.
+
+- Textbook: https://openstax.org/books/anatomy-and-physiology-2e
+- License terms: https://creativecommons.org/licenses/by/4.0/
+
 BodyParts3D represents an adult male reference anatomy based on TARO MRI and anatomical illustration refinements. It is not a complete model of every possible human anatomical structure or variation. This interface is educational and is not a clinical tool.
 
 ## Female anatomy

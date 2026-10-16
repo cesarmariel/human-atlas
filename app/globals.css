@@ -90,3 +90,4 @@ html[lang=es] .search-result-name,html[lang=es] .structure-title,html[lang=es] .
 .anatomy-note{margin:7px 0 0;max-width:360px;font-size:11px;line-height:1.4;color:#78828c}
 @media(max-width:767px){.anatomy-note{font-size:10px;max-width:180px;margin-top:6px}.view-controls{top:50%;left:auto;right:max(8px,env(safe-area-inset-right));transform:translateY(-50%);flex-direction:column;width:auto;margin:0}.view-controls i{width:28px;height:1px;margin:4px 8px}}
 @media(max-height:600px) and (orientation:landscape){.anatomy-note{display:none}}
+.organ-how{display:flex;flex-direction:column;gap:6px;margin-top:14px}.organ-how h3{margin:0;font-size:12px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:#687786}.organ-how p{margin:0;font-size:13px;line-height:1.65;color:#66727f}

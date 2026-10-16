@@ -12,7 +12,7 @@ An interactive 3D anatomy explorer built with React, Three.js, and shadcn/ui. Ta
 - Toggle individual systems or use skeleton and organ presets.
 - Move from assembled anatomy to a spaced inventory of every visible piece.
 - Search anatomical names and source identifiers.
-- Isolate a selected structure and read its details.
+- Isolate a selected structure and read what it is and how it works, with a link to the matching OpenStax *Anatomy and Physiology 2e* section (65 organs and structures).
 - Use compact controls and detail panels on mobile.
 
 ## Run locally

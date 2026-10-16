@@ -1,4 +1,4 @@
-import {EXPLANATIONS,SYSTEMS,type AnatomySex,type SystemId,type View} from './anatomy';
+import {SYSTEMS,type AnatomySex,type SystemId,type View} from './anatomy';
 export type Lang = 'en'|'es';
 const STORAGE_KEY='human-atlas-lang';
 export function initialLang():Lang{try{const saved=localStorage.getItem(STORAGE_KEY);if(saved==='en'||saved==='es')return saved;}catch{/* Storage can be unavailable; fall back to the browser language. */}return typeof navigator!=='undefined'&&navigator.language?.toLowerCase().startsWith('es')?'es':'en';}
@@ -17,7 +17,7 @@ const en={
  openLayers:'Open system layers',explode:'Explode anatomy',assembled:'Assembled',everyPiece:'Every piece',assembleReset:'Assemble and reset',
  dragPan:'Drag to pan',dragOrbit:'Drag to orbit',pinchZoom:'Pinch to zoom',tapInspect:'Tap to inspect',credits:'Source & credits',
  preparing:'Preparing the anatomy',loading:'Loading',reload:'Reload viewer',
- anatomy:'ANATOMY',systemOverview:'System overview · structure identified from source anatomy',atlasReference:'Atlas reference',selectedPieces:'Selected pieces',included:'Included structures',andMore:(n:number)=>`And ${n} more modeled pieces.`,viewSource:'View anatomical source',
+ anatomy:'ANATOMY',howItWorks:'How it works',partOf:(s:string)=>`Part of: ${s}`,organSource:'Source: OpenStax, Anatomy and Physiology 2e',organCredit:'Organ explanations are written for this atlas and checked against OpenStax, Anatomy and Physiology 2e (Rice University, CC BY 4.0).',systemOverview:'System overview · structure identified from source anatomy',atlasReference:'Atlas reference',selectedPieces:'Selected pieces',included:'Included structures',andMore:(n:number)=>`And ${n} more modeled pieces.`,viewSource:'View anatomical source',
  showSurrounding:'Show surrounding anatomy',isolate:'Isolate structure',clear:'Clear selection',
  aboutEyebrow:'SOURCE & SCOPE',aboutTitle:'A body, revealed.',aboutLead:'Explore the anatomy available in two independent, licensed reference collections.',aboutMale:'Male · BodyParts3D',aboutFemale:'Female · Human Reference Atlas',
  aboutFemaleText:'888 source meshes, including the whole-body surface, selected organs, and female reproductive anatomy. Female skeleton and muscle coverage is partial. Eight pregnancy reference pieces are in a separate layer, hidden by default.',
@@ -42,7 +42,7 @@ const es:Strings={
  openLayers:'Abrir capas de sistemas',explode:'Separar anatomía',assembled:'Ensamblado',everyPiece:'Todas las piezas',assembleReset:'Ensamblar y restablecer',
  dragPan:'Arrastra para desplazar',dragOrbit:'Arrastra para girar',pinchZoom:'Pellizca para ampliar',tapInspect:'Toca para inspeccionar',credits:'Fuente y créditos',
  preparing:'Preparando la anatomía',loading:'Cargando',reload:'Recargar visor',
- anatomy:'ANATOMÍA',systemOverview:'Resumen del sistema · estructura identificada en la anatomía de origen',atlasReference:'Referencia del atlas',selectedPieces:'Piezas seleccionadas',included:'Estructuras incluidas',andMore:(n:number)=>`Y ${n} piezas modeladas más.`,viewSource:'Ver fuente anatómica',
+ anatomy:'ANATOMÍA',howItWorks:'Cómo funciona',partOf:(s:string)=>`Forma parte de: ${s}`,organSource:'Fuente: OpenStax, Anatomy and Physiology 2e',organCredit:'Las explicaciones de los órganos están redactadas para este atlas y contrastadas con OpenStax, Anatomy and Physiology 2e (Rice University, CC BY 4.0).',systemOverview:'Resumen del sistema · estructura identificada en la anatomía de origen',atlasReference:'Referencia del atlas',selectedPieces:'Piezas seleccionadas',included:'Estructuras incluidas',andMore:(n:number)=>`Y ${n} piezas modeladas más.`,viewSource:'Ver fuente anatómica',
  showSurrounding:'Mostrar anatomía circundante',isolate:'Aislar estructura',clear:'Quitar selección',
  aboutEyebrow:'FUENTE Y ALCANCE',aboutTitle:'Un cuerpo al descubierto.',aboutLead:'Explora la anatomía de dos colecciones de referencia independientes y con licencia abierta.',aboutMale:'Varón · BodyParts3D',aboutFemale:'Mujer · Human Reference Atlas',
  aboutFemaleText:'888 mallas de origen, con la superficie corporal completa, órganos seleccionados y la anatomía reproductora femenina. El esqueleto y la musculatura femeninos son parciales. Ocho piezas de referencia del embarazo van en una capa aparte, oculta por defecto.',
@@ -72,25 +72,10 @@ const SYSTEMS_ES:Record<SystemId,{name:string;description:string}>={
  pregnancy:{name:'Referencia del embarazo',description:'La placenta y el cordón umbilical permiten el intercambio entre la circulación materna y la fetal durante el embarazo. Estas estructuras de referencia se muestran aparte de la anatomía adulta por defecto.'},
  connective:{name:'Tejido conjuntivo',description:'El cartílago, los ligamentos y otros tejidos conjuntivos sostienen, unen y separan estructuras. Entre sus funciones están estabilizar las articulaciones y repartir las cargas mecánicas.'},
 };
-const EXPLANATIONS_ES:Record<string,string>={
- 'uterus':'Un órgano muscular hueco situado en la pelvis. Su revestimiento cambia a lo largo del ciclo menstrual y puede permitir la implantación y el desarrollo durante el embarazo.',
- 'vagina':'Un conducto muscular que une el cuello del útero con el exterior del cuerpo. Da paso al flujo menstrual y forma parte del canal del parto.',
- 'ovary':'Un órgano que contiene ovocitos en desarrollo y produce hormonas como los estrógenos y la progesterona.',
- 'heart':'Una bomba muscular situada en el tórax. Su lado derecho envía la sangre a los pulmones; el izquierdo la impulsa por la circulación sistémica.',
- 'liver':'Un órgano grande situado bajo el lado derecho del diafragma. Procesa los nutrientes absorbidos, produce bilis y sintetiza muchas de las proteínas que transporta la sangre.',
- 'brain':'El órgano central del sistema nervioso. Sus regiones interconectadas sustentan la percepción, el movimiento, la memoria, el lenguaje y la regulación de las funciones corporales.',
- 'stomach':'Una cavidad muscular entre el esófago y el intestino delgado. Almacena el alimento y lo mezcla con ácido y enzimas antes de liberarlo al duodeno.',
- 'spleen':'Un órgano linfoide de la parte superior izquierda del abdomen. Filtra la sangre, elimina las células sanguíneas envejecidas y participa en la respuesta inmunitaria.',
- 'pancreas':'Un órgano abdominal con funciones digestivas y endocrinas. Aporta enzimas al intestino delgado y libera hormonas como la insulina y el glucagón.',
- 'urinary bladder':'Un reservorio muscular de la pelvis que almacena la orina que llega desde los riñones por los uréteres.',
- 'right lung':'El pulmón derecho tiene tres lóbulos separados por cisuras. El aire le llega por el bronquio principal derecho y su tejido intercambia oxígeno y dióxido de carbono con la sangre.',
- 'left lung':'El pulmón izquierdo tiene dos lóbulos y una escotadura que deja sitio al corazón. El aire le llega por el bronquio principal izquierdo y su tejido intercambia oxígeno y dióxido de carbono con la sangre.',
- 'trachea':'La vía aérea principal que une la laringe con los bronquios. Sus anillos de cartílago la mantienen abierta durante la respiración.',
- 'diaphragm':'Un músculo amplio que separa el tórax del abdomen. Al contraerse aumenta el volumen torácico y ayuda a introducir aire en los pulmones.',
-};
 export function systemName(id:SystemId|undefined,lang:Lang){if(!id)return undefined;return lang==='es'?SYSTEMS_ES[id].name:SYSTEMS.find(s=>s.id===id)?.name;}
 const FEMALE_REPRODUCTIVE:Record<Lang,string>={en:'Female reproductive structures include the ovaries, uterine tubes, uterus, cervix, and vagina. Together they support oocyte development, fertilization, menstruation, and pregnancy.',es:'Las estructuras reproductoras femeninas incluyen los ovarios, las trompas uterinas, el útero, el cuello uterino y la vagina. Juntas participan en el desarrollo de los ovocitos, la fecundación, la menstruación y el embarazo.'};
-export function describe(name:string,system:SystemId,lang:Lang,sex:AnatomySex='male'){const key=name.toLowerCase();if(sex==='female'&&system==='reproductive'&&!EXPLANATIONS[key])return FEMALE_REPRODUCTIVE[lang];if(lang==='es')return EXPLANATIONS_ES[key]??SYSTEMS_ES[system].description;return EXPLANATIONS[key]??SYSTEMS.find(s=>s.id===system)?.description??'';}
+/** System-level text for structures without an organ explanation. */
+export function describe(system:SystemId,lang:Lang,sex:AnatomySex='male'){if(sex==='female'&&system==='reproductive')return FEMALE_REPRODUCTIVE[lang];return lang==='es'?SYSTEMS_ES[system].description:SYSTEMS.find(s=>s.id===system)?.description??'';}
 const ERRORS_ES:Record<string,string>={
  'The anatomy catalogue could not be loaded.':'No se pudo cargar el catálogo anatómico.',
  'This browser could not start the 3D viewer. Please try a browser with WebGL enabled.':'Este navegador no pudo iniciar el visor 3D. Prueba con un navegador que tenga WebGL activado.',
