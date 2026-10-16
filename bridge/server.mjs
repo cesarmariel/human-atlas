@@ -56,15 +56,17 @@ ${structures.length?`\nATLAS STRUCTURES (one per line):\n${structures.join('\n')
 const userText=({notes,files})=>`Documents attached: ${files.map(f=>f.name).join(', ')}.${notes?`\n\nThe person adds this context: ${notes}`:''}\n\nReturn the JSON object.`;
 
 const has=cmd=>spawnSync(process.platform==='win32'?'where':'which',[cmd],{stdio:'ignore'}).status===0;
+/** Claude Code also runs with an API key in the environment; otherwise it needs `claude auth login`. */
+function claudeLoggedIn(){if(env.ANTHROPIC_API_KEY||env.ANTHROPIC_AUTH_TOKEN)return true;try{return JSON.parse(spawnSync('claude',['auth','status'],{encoding:'utf8',timeout:10000}).stdout).loggedIn===true;}catch{return false;}}
 async function reachable(url){try{const r=await fetch(url,{signal:AbortSignal.timeout(1500)});return r.ok;}catch{return false;}}
 const LOCAL_URL=(env.LOCAL_LLM_URL||'http://localhost:11434/v1').replace(/\/$/,'');
 
 const PROVIDERS={
- 'claude-code':{label:'Claude Code (CLI)',accepts:['pdf','image','text'],available:()=>has('claude'),run:runClaudeCode},
- 'codex':{label:'Codex (CLI)',accepts:['image','text'],available:()=>has('codex'),run:runCodex},
- 'anthropic':{label:`Anthropic API (${env.ANTHROPIC_MODEL||'claude-opus-5-5'})`,accepts:['pdf','image','text'],available:()=>!!(env.ANTHROPIC_API_KEY||env.ANTHROPIC_AUTH_TOKEN),run:runAnthropic},
- 'openai':{label:`OpenAI API (${env.OPENAI_MODEL||'gpt-5'})`,accepts:['pdf','image','text'],available:()=>!!env.OPENAI_API_KEY,run:req=>runOpenAICompatible(req,{url:(env.OPENAI_BASE_URL||'https://api.openai.com/v1').replace(/\/$/,''),key:env.OPENAI_API_KEY,model:env.OPENAI_MODEL||'gpt-5',pdf:true})},
- 'local':{label:`Modelo local (${env.LOCAL_LLM_MODEL||'sin configurar'})`,accepts:['image','text'],available:()=>!!env.LOCAL_LLM_MODEL&&reachable(`${LOCAL_URL}/models`),run:req=>runOpenAICompatible(req,{url:LOCAL_URL,key:env.LOCAL_LLM_KEY,model:env.LOCAL_LLM_MODEL,pdf:false})},
+ 'claude-code':{label:'Claude Code (CLI)',accepts:['pdf','image','text'],problem:()=>!has('claude')?'not_installed':!claudeLoggedIn()?'not_logged_in':null,run:runClaudeCode},
+ 'codex':{label:'Codex (CLI)',accepts:['image','text'],problem:()=>has('codex')?null:'not_installed',run:runCodex},
+ 'anthropic':{label:`Anthropic API (${env.ANTHROPIC_MODEL||'claude-opus-5-5'})`,accepts:['pdf','image','text'],problem:()=>env.ANTHROPIC_API_KEY||env.ANTHROPIC_AUTH_TOKEN?null:'missing_key',run:runAnthropic},
+ 'openai':{label:`OpenAI API (${env.OPENAI_MODEL||'gpt-5'})`,accepts:['pdf','image','text'],problem:()=>env.OPENAI_API_KEY?null:'missing_key',run:req=>runOpenAICompatible(req,{url:(env.OPENAI_BASE_URL||'https://api.openai.com/v1').replace(/\/$/,''),key:env.OPENAI_API_KEY,model:env.OPENAI_MODEL||'gpt-5',pdf:true})},
+ 'local':{label:`Modelo local (${env.LOCAL_LLM_MODEL||'sin configurar'})`,accepts:['image','text'],problem:async()=>!env.LOCAL_LLM_MODEL?'missing_model':await reachable(`${LOCAL_URL}/models`)?null:'unreachable',run:req=>runOpenAICompatible(req,{url:LOCAL_URL,key:env.LOCAL_LLM_KEY,model:env.LOCAL_LLM_MODEL,pdf:false})},
 };
 
 const kind=f=>f.type==='application/pdf'?'pdf':f.type.startsWith('image/')?'image':'text';
@@ -143,14 +145,14 @@ http.createServer(async(req,res)=>{
  if(req.method==='OPTIONS')return send(res,204,{},origin);
  try{
   if(req.method==='GET'&&req.url==='/providers'){
-   const list=await Promise.all(Object.entries(PROVIDERS).map(async([id,p])=>({id,label:p.label,accepts:p.accepts,available:!!(await p.available())})));
+   const list=await Promise.all(Object.entries(PROVIDERS).map(async([id,p])=>{const problem=await p.problem();return {id,label:p.label,accepts:p.accepts,available:!problem,problem};}));
    return send(res,200,{providers:list},origin);
   }
   if(req.method==='POST'&&req.url==='/analyze'){
    let size=0;const chunks=[];for await(const c of req){size+=c.length;if(size>MAX_BODY)return send(res,413,{error:'The files are too large (60 MB maximum).'},origin);chunks.push(c);}
    const body=JSON.parse(Buffer.concat(chunks).toString('utf8'));
    const provider=PROVIDERS[body.provider];
-   if(!provider||!(await provider.available()))return send(res,400,{error:'That provider is not configured on this machine.'},origin);
+   if(!provider||await provider.problem())return send(res,400,{error:'That provider is not configured on this machine.'},origin);
    if(!Array.isArray(body.files)||!body.files.length)return send(res,400,{error:'Attach at least one document.'},origin);
    const unsupported=body.files.find(f=>!provider.accepts.includes(kind(f)));
    if(unsupported)return send(res,400,{error:`${provider.label} cannot read ${unsupported.name}.`},origin);

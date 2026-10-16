@@ -12,7 +12,7 @@ const MAX_BYTES=60*1024*1024;
 export interface Finding {structure:string;label?:string;atlas_name:string;side:'left'|'right'|'both'|'none';severity:'normal'|'mild'|'moderate'|'severe'|'unclear';finding:string;quote:string;source:'report'|'image'}
 export interface ReportResult {summary:string;findings:Finding[];glossary:{term:string;meaning:string}[];questions:string[];limitations:string}
 interface SavedReport {id:string;date:string;sex:AnatomySex;provider:string;files:string[];result:ReportResult}
-interface Provider {id:string;label:string;accepts:string[];available:boolean}
+interface Provider {id:string;label:string;accepts:string[];available:boolean;problem:string|null}
 
 function loadSaved():SavedReport[]{try{const raw=localStorage.getItem(STORAGE_KEY);return raw?JSON.parse(raw) as SavedReport[]:[];}catch{return [];}}
 function storeSaved(list:SavedReport[]){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(list));}catch{/* Not persisted; the analysis stays visible until the page reloads. */}}
@@ -37,7 +37,7 @@ function readFile(file:File){return new Promise<{name:string;type:string;data:st
 interface Props {atlas:Atlas;sex:AnatomySex;lang:Lang;t:Strings;names:NameTable|null;onClose:()=>void;onInspect:(concept:Concept)=>void;onShowAll:(ids:string[])=>void}
 export default function ReportPanel({atlas,sex,lang,t,names,onClose,onInspect,onShowAll}:Props){
  const [providers,setProviders]=useState<Provider[]|null>(null),[bridgeDown,setBridgeDown]=useState(false),[provider,setProvider]=useState(''),[files,setFiles]=useState<File[]>([]),[notes,setNotes]=useState(''),[busy,setBusy]=useState(false),[error,setError]=useState(''),[saved,setSaved]=useState<SavedReport[]>(loadSaved),[current,setCurrent]=useState<string|null>(()=>loadSaved()[0]?.id??null);
- const checkBridge=()=>{setBridgeDown(false);fetch(`${BRIDGE}/providers`).then(r=>r.json() as Promise<{providers:Provider[]}>).then(d=>{setProviders(d.providers);setProvider(p=>p||d.providers.find(x=>x.available)?.id||'');}).catch(()=>setBridgeDown(true));};
+ const checkBridge=()=>{setBridgeDown(false);fetch(`${BRIDGE}/providers`).then(r=>r.json() as Promise<{providers:Provider[]}>).then(d=>{setProviders(d.providers);setProvider(p=>p&&d.providers.find(x=>x.id===p)?.available?p:d.providers.find(x=>x.available)?.id||d.providers[0]?.id||'');}).catch(()=>setBridgeDown(true));};
  useEffect(checkBridge,[]);
  const report=saved.find(r=>r.id===current);
  const located=useMemo(()=>report&&report.sex===sex?report.result.findings.map(f=>({finding:f,match:locate(atlas,f)})):[],[report,atlas,sex]);
@@ -69,6 +69,14 @@ export default function ReportPanel({atlas,sex,lang,t,names,onClose,onInspect,on
    providers&&<div className="report-form">
     <label>{t.reportProvider}<select value={provider} onChange={e=>setProvider(e.target.value)}>{providers.map(p=><option key={p.id} value={p.id} disabled={!p.available}>{p.label}{p.available?'':` · ${t.reportUnavailable}`}</option>)}</select></label>
     {!providers.some(p=>p.available)&&<p className="report-note">{t.reportNoProvider}</p>}
+    <details className="report-setup" open={!providers.some(p=>p.available)}><summary>{t.setupTitle}</summary>
+     <p>{t.setupEnv}</p><pre>cp .env.example .env</pre>
+     <ul>{providers.map(p=>{const guide=p.problem?t.setup[p.id]?.[p.problem]:undefined;return <li key={p.id}>
+      <div className="setup-head"><strong>{p.label}</strong><span className={p.available?'ok':'missing'}>{p.available?t.setupReady:t.setupMissing}</span></div>
+      {guide&&<><p>{guide.text}</p>{guide.cmds&&<pre>{guide.cmds.join('\n')}</pre>}{guide.env&&<><p>{t.setupEnvLines}</p><pre>{guide.env.join('\n')}</pre></>}</>}
+     </li>;})}</ul>
+     <Button variant="ghost" onClick={checkBridge}>{t.reportRetry}</Button>
+    </details>
     <label>{t.reportFiles}<input type="file" multiple accept={[chosen?.accepts.includes('pdf')&&'application/pdf',chosen?.accepts.includes('image')&&'image/*','.txt,text/plain'].filter(Boolean).join(',')} onChange={e=>setFiles([...(e.target.files??[])])}/></label>
     <label>{t.reportNotes}<textarea rows={2} value={notes} maxLength={4000} placeholder={t.reportNotesPlaceholder} onChange={e=>setNotes(e.target.value)}/></label>
     <p className="report-note">{t.reportPrivacy}</p>

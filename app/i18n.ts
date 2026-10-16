@@ -38,6 +38,16 @@ const en={
  reportSummary:'Summary',reportFindings:'Findings',reportShowAll:'Show all on the body',
  severity:{normal:'Normal',mild:'Mild',moderate:'Moderate',severe:'Severe',unclear:'Unclear'} as Record<'normal'|'mild'|'moderate'|'severe'|'unclear',string>,
  reportApprox:(s:string)=>`Not modelled exactly; closest structure in the atlas: ${s}.`,reportLocate:'Locate on the body',reportNotInAtlas:'This structure is not modelled in the atlas.',
+ setupTitle:'Set up providers',setupReady:'Ready',setupMissing:'Needs setup',
+ setupEnv:'Keys and models go in a .env file in the project folder (it is never uploaded to GitHub). Create it from the template, edit it, and restart the bridge afterwards (Ctrl+C, then npm run bridge):',
+ setupEnvLines:'Add to .env:',
+ setup:{
+  'claude-code':{not_installed:{text:'Claude Code is not installed on this computer. Install it from claude.com/claude-code, then sign in once:',cmds:['claude auth login']},not_logged_in:{text:'Claude Code is installed but not signed in on this computer. Sign in once (a browser window opens):',cmds:['claude auth login']}},
+  codex:{not_installed:{text:'Codex is not installed. Install it and sign in with your ChatGPT or OpenAI account:',cmds:['npm install -g @openai/codex','codex login']}},
+  anthropic:{missing_key:{text:'An Anthropic API key is missing (create one at platform.claude.com).',env:['ANTHROPIC_API_KEY=sk-ant-...','# optional: ANTHROPIC_MODEL=claude-opus-5-5']}},
+  openai:{missing_key:{text:'An OpenAI API key is missing (create one at platform.openai.com).',env:['OPENAI_API_KEY=sk-...','OPENAI_MODEL=gpt-5']}},
+  local:{missing_model:{text:'Choose which local model to use. With Ollama, for example, download a model that can read images:',cmds:['ollama pull llama3.2-vision'],env:['LOCAL_LLM_URL=http://localhost:11434/v1','LOCAL_LLM_MODEL=llama3.2-vision']},unreachable:{text:'The local model server at LOCAL_LLM_URL is not responding. Start it, for example by opening Ollama or running:',cmds:['ollama serve']}},
+ } as Record<string,Record<string,{text:string;cmds?:string[];env?:string[]}>>,
  reportGlossary:'Terms',reportQuestions:'Questions for your doctor',reportBy:(s:string)=>`Analysed with ${s}. AI can make mistakes.`,
  canvasLabel:'Interactive human anatomy. Drag to orbit, pinch or scroll to zoom, and tap a structure to inspect it.',
 };
@@ -76,6 +86,16 @@ const es:Strings={
  reportSummary:'Resumen',reportFindings:'Hallazgos',reportShowAll:'Ver todo en el cuerpo',
  severity:{normal:'Normal',mild:'Leve',moderate:'Moderado',severe:'Grave',unclear:'Sin determinar'},
  reportApprox:(s:string)=>`No está modelada con exactitud; la más cercana del atlas es: ${s}.`,reportLocate:'Localizar en el cuerpo',reportNotInAtlas:'Esta estructura no está modelada en el atlas.',
+ setupTitle:'Configurar proveedores',setupReady:'Listo',setupMissing:'Falta configurar',
+ setupEnv:'Las claves y los modelos van en un archivo .env en la carpeta del proyecto (nunca se sube a GitHub). Créalo a partir de la plantilla, edítalo y reinicia el puente después (Ctrl+C y npm run bridge):',
+ setupEnvLines:'Añade a .env:',
+ setup:{
+  'claude-code':{not_installed:{text:'Claude Code no está instalado en este ordenador. Instálalo desde claude.com/claude-code y luego inicia sesión una vez:',cmds:['claude auth login']},not_logged_in:{text:'Claude Code está instalado pero sin sesión iniciada en este ordenador. Inicia sesión una vez (se abre el navegador):',cmds:['claude auth login']}},
+  codex:{not_installed:{text:'Codex no está instalado. Instálalo e inicia sesión con tu cuenta de ChatGPT u OpenAI:',cmds:['npm install -g @openai/codex','codex login']}},
+  anthropic:{missing_key:{text:'Falta la clave de API de Anthropic (créala en platform.claude.com).',env:['ANTHROPIC_API_KEY=sk-ant-...','# opcional: ANTHROPIC_MODEL=claude-opus-5-5']}},
+  openai:{missing_key:{text:'Falta la clave de API de OpenAI (créala en platform.openai.com).',env:['OPENAI_API_KEY=sk-...','OPENAI_MODEL=gpt-5']}},
+  local:{missing_model:{text:'Indica qué modelo local usar. Con Ollama, por ejemplo, descarga un modelo que lea imágenes:',cmds:['ollama pull llama3.2-vision'],env:['LOCAL_LLM_URL=http://localhost:11434/v1','LOCAL_LLM_MODEL=llama3.2-vision']},unreachable:{text:'El servidor del modelo local en LOCAL_LLM_URL no responde. Arráncalo, por ejemplo abriendo Ollama o ejecutando:',cmds:['ollama serve']}},
+ },
  reportGlossary:'Términos',reportQuestions:'Preguntas para tu médico',reportBy:(s:string)=>`Analizado con ${s}. La IA puede equivocarse.`,
  canvasLabel:'Anatomía humana interactiva. Arrastra para girar, pellizca o usa la rueda para ampliar y toca una estructura para inspeccionarla.',
 };

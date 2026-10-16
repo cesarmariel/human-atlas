@@ -47,6 +47,8 @@ cp .env.example .env   # fill in only what you use; .env is never committed
 npm run bridge         # http://127.0.0.1:3017, next to npm run dev
 ```
 
+The Report panel's **Set up providers** section shows, for each provider, whether it is ready and what is missing (not installed, not signed in, missing key or model, local server not responding), with the exact commands and `.env` lines to fix it. Restart the bridge after editing `.env`.
+
 Privacy: the bridge listens only on 127.0.0.1 and answers only the atlas origins in `BRIDGE_ORIGINS`. Files go only to the provider you pick (CLI providers read them from a temporary folder that is deleted afterwards, with Claude Code limited to its Read tool and Codex to a read-only sandbox). Results are saved only in your browser and can be deleted from the panel. The Codex path follows the Codex CLI documentation but has not been tested yet.
 
 ## Validate
