@@ -1,11 +1,13 @@
 # Human Atlas
 
-An interactive 3D anatomy explorer built with React, Three.js, and shadcn/ui. Take the BodyParts3D adult male reference apart into **2,325 individually selectable meshes**, explore **15 anatomical systems**, and search **3,555 named concepts**.
+An interactive 3D anatomy explorer built with React, Three.js, and shadcn/ui. Take the BodyParts3D adult male reference apart into **2,325 individually selectable meshes**, explore **15 anatomical systems**, and search **3,555 named concepts**. A female reference model (Human Reference Atlas, 888 meshes) is available from the anatomy selector.
 
 **[Explore the live demo](https://human-atlas-seven.vercel.app)**
 
 ## Explore
 
+- Choose male or female anatomy; the geometry, catalogue, and available systems change together.
+- Switch the interface between English and Spanish.
 - Orbit, zoom, and select structures directly on the body.
 - Toggle individual systems or use skeleton and organ presets.
 - Move from assembled anatomy to a spaced inventory of every visible piece.
@@ -40,6 +42,8 @@ Validation covers mesh buffers, names and concept membership, nonoverlapping exp
 The current viewer uses **BodyParts3D 4.0**, an adult male reference anatomy, licensed **CC BY 4.0**. BodyParts3D 4.0 omits some structures, so 91 meshes (lungs, liver, abdominal wall, facial and masticatory muscles and others) come from **BodyParts3D 3.0** (**CC BY-SA 2.1 Japan**), packaged in their own chunk by `scripts/add-legacy-parts.mjs`. It does not represent every human structure or variation. Individual source meshes are distinct from named concepts, which may group multiple meshes. Descriptions distinguish general system context from individual organ explanations.
 
 Geometry is simplified for browser performance while retaining every source mesh. The packaged model contains 2,288,268 triangles and downloads approximately 33 MB of compressed geometry. Full credits, source links, and adaptation details are in [ATTRIBUTION.md](public/ATTRIBUTION.md).
+
+The female model is the **Human Reference Atlas united-female v1.5** (HuBMAP), licensed **CC BY 4.0**: 888 meshes with the whole-body surface, selected organs, and female reproductive anatomy. Its skeleton and muscle coverage is partial, and eight pregnancy reference pieces are in a separate layer hidden by default. Rebuild it with `scripts/convert-female.py`, then `node scripts/optimize-anatomy.mjs atlas-female.json`.
 
 This is an educational explorer, not a diagnostic or surgical tool.
 
