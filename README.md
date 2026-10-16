@@ -2,7 +2,9 @@
 
 An interactive 3D anatomy explorer built with React, Three.js, and shadcn/ui. Take the BodyParts3D adult male reference apart into **2,325 individually selectable meshes**, explore **15 anatomical systems**, and search **3,555 named concepts**. A female reference model (Human Reference Atlas, 888 meshes) is available from the anatomy selector.
 
-**[Explore the live demo](https://human-atlas-seven.vercel.app)**
+> **This fork is developed and maintained by César Mariel Albert ([Iristrace](https://iristrace.com)).** It builds on the original [Human Atlas](https://github.com/ashemag/human-atlas) by ashemag and adds: Spanish language, the female reference model with a male/female selector, 91 structures from BodyParts3D 3.0 (lungs, liver, abdominal wall, facial and masticatory muscles), explanations of how 65 organs work with OpenStax sources, the medical report analysis through a local AI bridge, and fixes to the explode slider and phone layout.
+
+**[Live demo of the original project](https://human-atlas-seven.vercel.app)** (without this fork's additions)
 
 ## Explore
 
