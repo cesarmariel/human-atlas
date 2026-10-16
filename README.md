@@ -26,6 +26,27 @@ npm run dev
 
 Open http://localhost:3016. To build the static site, run `npm run build`; the output is in `dist/`.
 
+## Your medical reports (optional, local AI)
+
+The **Report** option in the systems panel lets each person upload their own report, lab results or medical images and see the findings located on the body: a summary in plain language, each finding with its severity and the sentence of the report it comes from, a glossary and questions for the doctor. **It is an educational aid, not a diagnosis.** Image reading by AI is only indicative.
+
+The analysis runs through a small bridge on your own computer, which forwards the files to the AI you choose:
+
+| Provider | Needs | Reads |
+|---|---|---|
+| Claude Code (CLI) | `claude` installed and signed in (`claude auth login`) | PDF, images, text |
+| Codex (CLI) | `codex` installed and signed in | images, text |
+| Anthropic API | `ANTHROPIC_API_KEY` (default model `claude-opus-5-5`) | PDF, images, text |
+| OpenAI API | `OPENAI_API_KEY` and `OPENAI_MODEL` (or any compatible service via `OPENAI_BASE_URL`) | PDF, images, text |
+| Local model | An OpenAI-compatible server such as Ollama or LM Studio: `LOCAL_LLM_URL`, `LOCAL_LLM_MODEL` | images, text |
+
+```sh
+cp .env.example .env   # fill in only what you use; .env is never committed
+npm run bridge         # http://127.0.0.1:3017, next to npm run dev
+```
+
+Privacy: the bridge listens only on 127.0.0.1 and answers only the atlas origins in `BRIDGE_ORIGINS`. Files go only to the provider you pick (CLI providers read them from a temporary folder that is deleted afterwards, with Claude Code limited to its Read tool and Codex to a read-only sandbox). Results are saved only in your browser and can be deleted from the panel. The Codex path follows the Codex CLI documentation but has not been tested yet.
+
 ## Validate
 
 ```sh
@@ -45,7 +66,7 @@ Geometry is simplified for browser performance while retaining every source mesh
 
 The female model is the **Human Reference Atlas united-female v1.5** (HuBMAP), licensed **CC BY 4.0**: 888 meshes with the whole-body surface, selected organs, and female reproductive anatomy. Its skeleton and muscle coverage is partial, and eight pregnancy reference pieces are in a separate layer hidden by default. Rebuild it with `scripts/convert-female.py`, then `node scripts/optimize-anatomy.mjs atlas-female.json`.
 
-This is an educational explorer, not a diagnostic or surgical tool.
+This is an educational explorer, not a diagnostic or surgical tool. The optional report analysis only locates and explains what a person's own documents say; it does not replace their doctor.
 
 ## How it works
 
