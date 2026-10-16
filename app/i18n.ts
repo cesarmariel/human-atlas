@@ -7,7 +7,7 @@ export const LOCALE:Record<Lang,string>={en:'en-US',es:'es-ES'};
 const en={
  eyebrow:'INTERACTIVE ANATOMY',modeledPieces:'modeled pieces',panels:'Explorer panels',searchAnatomy:'Search anatomy',findStructure:'Find a structure',aboutAtlas:'About this atlas',
  switchLang:'Cambiar a español',otherLang:'ES',
- chooseAnatomy:'Choose male or female anatomy',maleAnatomy:'Male anatomy',femaleAnatomy:'Female anatomy',
+ chooseAnatomy:'Choose male or female anatomy',maleAnatomy:'Male anatomy',femaleAnatomy:'Female anatomy',femaleNote:'Partial model: the skeleton and muscles are incomplete.',
  layers:'Anatomical layers',systems:'Systems',closeSystems:'Close systems',all:'All',skeleton:'Skeleton',organs:'Organs',showOnly:(s:string)=>`Show only ${s}`,show:(s:string)=>`Show ${s}`,piecesVisible:'pieces visible',hideAll:'Hide all',
  findAnatomy:'Find anatomy',closeSearch:'Close search',searchPlaceholder:'Heart, femur, cranial nerve…',searchLabel:'Search named anatomical structures',noMatches:'No structures match your search.',piece:'piece',pieces:'pieces',
  searchNoteQuery:'Showing up to 80 matches. Refine your search to find smaller structures.',searchNoteEmpty:'Start with a major organ, or search every named structure.',
@@ -32,7 +32,7 @@ export type Strings = typeof en;
 const es:Strings={
  eyebrow:'ANATOMÍA INTERACTIVA',modeledPieces:'piezas modeladas',panels:'Paneles del explorador',searchAnatomy:'Buscar anatomía',findStructure:'Buscar una estructura',aboutAtlas:'Acerca de este atlas',
  switchLang:'Switch to English',otherLang:'EN',
- chooseAnatomy:'Elegir anatomía masculina o femenina',maleAnatomy:'Anatomía masculina',femaleAnatomy:'Anatomía femenina',
+ chooseAnatomy:'Elegir anatomía masculina o femenina',maleAnatomy:'Anatomía masculina',femaleAnatomy:'Anatomía femenina',femaleNote:'Modelo parcial: el esqueleto y la musculatura están incompletos.',
  layers:'Capas anatómicas',systems:'Sistemas',closeSystems:'Cerrar sistemas',all:'Todo',skeleton:'Esqueleto',organs:'Órganos',showOnly:(s:string)=>`Mostrar solo: ${s}`,show:(s:string)=>`Mostrar: ${s}`,piecesVisible:'piezas visibles',hideAll:'Ocultar todo',
  findAnatomy:'Buscar anatomía',closeSearch:'Cerrar búsqueda',searchPlaceholder:'Corazón, fémur, nervio craneal…',searchLabel:'Buscar estructuras anatómicas por nombre',noMatches:'Ninguna estructura coincide con la búsqueda.',piece:'pieza',pieces:'piezas',
  searchNoteQuery:'Se muestran hasta 80 resultados. Afina la búsqueda para encontrar estructuras más pequeñas.',searchNoteEmpty:'Empieza por un órgano principal o busca cualquier estructura con nombre.',
