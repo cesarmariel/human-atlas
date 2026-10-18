@@ -23,10 +23,10 @@ Requires Node.js 22.13 or newer. No API keys or accounts are needed.
 
 ```sh
 npm ci
-npm run dev
+npm start
 ```
 
-Open http://localhost:3016. To build the static site, run `npm run build`; the output is in `dist/`.
+`npm start` runs the atlas and the local AI bridge together and opens http://localhost:3016 in your browser; Ctrl+C stops both. On macOS you can also double-click **Human Atlas.command** in the project folder (it installs the dependencies the first time). To run only the atlas, use `npm run dev` and open http://localhost:3016. To build the static site, run `npm run build`; the output is in `dist/`.
 
 ## Your medical reports (optional, local AI)
 

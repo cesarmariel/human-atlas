@@ -10,7 +10,8 @@
     "build": "vite build",
     "build:vercel": "vite build",
     "check": "tsc --noEmit",
-    "bridge": "node bridge/server.mjs"
+    "bridge": "node bridge/server.mjs",
+    "start": "node scripts/start.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.135.0",
