@@ -26,7 +26,7 @@ npm ci
 npm start
 ```
 
-`npm start` runs the atlas and the local AI bridge together and opens http://localhost:3016 in your browser; Ctrl+C stops both. On macOS you can also double-click **Human Atlas.command** in the project folder (it installs the dependencies the first time). To run only the atlas, use `npm run dev` and open http://localhost:3016. To build the static site, run `npm run build`; the output is in `dist/`.
+`npm start` runs the atlas and the local AI bridge together and opens http://localhost:3016 in your browser; Ctrl+C stops both. On macOS you can also double-click **Human Atlas.command** in the project folder (it installs the dependencies the first time). To get a **Human Atlas** app in Launchpad and Spotlight, run `zsh scripts/install-mac-app.sh` once; it opens a Terminal window running `npm start` (close it or press Ctrl+C to stop). To run only the atlas, use `npm run dev` and open http://localhost:3016. To build the static site, run `npm run build`; the output is in `dist/`.
 
 ## Your medical reports (optional, local AI)
 
